@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import { useState } from 'react'
-import { ImageBackground, Modal, Pressable, SafeAreaView, TextInput, View } from 'react-native'
+import { ImageBackground, Modal, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native'
 import { dataStyles } from '../../.expo/styles/dataStyles'
 import wave from '../../assets/images/wave.png'
 
@@ -43,6 +43,29 @@ export default function data() {
                        <TextInput style = {dataStyles.Alkalinity}
                         placeholder='Enter current level of Alkalinity'
                        />
+
+                        <View style = {dataStyles.cameraBtn}>
+                            <Pressable>
+                                <Ionicons 
+                                    name= 'camera'
+                                    size = {50}
+                                    color= '#041c4a'
+                                />
+                            </Pressable>
+
+                             <Text style= {dataStyles.optionText}>
+                                Take a picture or select from your gallery
+                             </Text>
+
+                            <View style = {dataStyles.uploadBtnWrapper}>
+                                <Pressable onPress= {null} style= {dataStyles.uploadBtn} >
+                                    <Text style = {dataStyles.uploadText}>UPLOAD</Text>
+                                </Pressable>
+
+                            </View>
+
+                        </View>
+
 
                        
                     </View>  
