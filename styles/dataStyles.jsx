@@ -62,7 +62,7 @@ export const dataStyles = StyleSheet.create({
     },
     cameraBtn:{
         alignItems: 'center',
-        padding: 30,
+        padding: 20,
     },
     optionText:{
         color:'#041c4a',
@@ -72,7 +72,7 @@ export const dataStyles = StyleSheet.create({
     },
     uploadBtnWrapper: {
         alignItems: 'center',
-        marginVertical: 16,           // space above/below
+        marginVertical: 12,           // space above/below
     },
     uploadBtn: {
         backgroundColor: '#041c4a',
@@ -96,6 +96,37 @@ export const dataStyles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     },
+    saveBtnWrapper:{
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    cameraContainer:{
+        flex: 1,
+        justifyContent: 'center',
+    },
+    cameraMessage:{
+        textAlign: 'center',
+        paddingBottom: 10,
+    },
+    cameraContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'black',
+    },
+    cameraPreview: {
+        width: '100%',
+        height: '80%',
+    },
+    closeBtn: {
+        position: 'absolute',
+        top: 40,
+        right: 20,
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        padding: 10,
+        borderRadius: 5,
+    },
+    
 
     
 
