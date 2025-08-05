@@ -1,11 +1,17 @@
 import { Ionicons } from '@expo/vector-icons'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { ImageBackground, Modal, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native'
-import { dataStyles } from '../../.expo/styles/dataStyles'
+
 import wave from '../../assets/images/wave.png'
+import { dataStyles } from '../../styles/dataStyles'
 
 export default function data() {
     const [isModalVisible, setIsModalVisible]= useState(false)
+
+    const[hasPerm, setHasPerm] = useState(false)
+    const[photoUri, setPhotoUri] = useState(null)
+    const camRef= useRef(null)
+
 
     
   return (

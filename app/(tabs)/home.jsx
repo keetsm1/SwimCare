@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ImageBackground, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native'
-import { homeStyles } from '../../.expo/styles/homeStyles'
 import wave from '../../assets/images/wave.png'
+import { homeStyles } from '../../styles/homeStyles'
 
 export default function home() {
   const [poolSize, setPoolSize] = useState('')
