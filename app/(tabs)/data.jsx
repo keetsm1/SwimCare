@@ -1,16 +1,47 @@
 import { Ionicons } from '@expo/vector-icons'
+import * as ImagePicker from 'expo-image-picker'
 import { useState } from 'react'
 import { ImageBackground, Modal, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native'
 import wave from '../../assets/images/wave.png'
-import CameraFunction from '../../components/CameraFunction'
 import { dataStyles } from '../../styles/dataStyles'
 
 export default function data() {
-    const [isModalVisible, setIsModalVisible]= useState(false);
-    const [showCamera, setShowCamera] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [imageUri, setImageUri] = useState(null);
+    
+    const pickImageFromGallery = async() =>{
+        const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            return;
+        }
 
-    
-    
+        const result = await ImagePicker.launchImageLibraryAsync({
+            quality: 1,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        })
+
+        if (!result.canceled) {
+            setImageUri(result.assets[0].uri);
+        }
+    }
+
+        const takePhotoWithCamera = async() =>{
+        const {status} = await ImagePicker.launchCameraAsync();
+        if (status !== 'granted') {
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            quality: 1,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        })
+
+        if (!result.canceled) {
+            setImageUri(result.assets[0].uri);
+        }
+    }
+
+
     return (
         <>
         <ImageBackground source = {wave} style= {dataStyles.container}>
@@ -25,7 +56,7 @@ export default function data() {
                     </Pressable>
                 </View>  
                 
-                <Modal visible= {isModalVisible}  transparent= {true} animationType= "slide" onRequestClose={()=> {setIsModalVisible(false), setShowCamera(false)}} >
+                <Modal visible= {isModalVisible}  transparent= {true} animationType= "slide" onRequestClose={()=> {setIsModalVisible(false)}} >
                     <View style = {dataStyles.modalStyle}>
                         <View style= {dataStyles.popUpMenu}>
                         <TextInput style= {dataStyles.salt}
@@ -49,7 +80,7 @@ export default function data() {
                         />
 
                             <View style = {dataStyles.cameraBtn}>
-                                <Pressable onPress={()=> setShowCamera(true)}>
+                                <Pressable onPress={takePhotoWithCamera}>
                                     <Ionicons 
                                         name= 'camera'
                                         size = {50}
@@ -63,7 +94,7 @@ export default function data() {
 
 
                                 <View style = {dataStyles.uploadBtnWrapper}>
-                                    <Pressable onPress= {null} style= {dataStyles.uploadBtn} >
+                                    <Pressable onPress= {pickImageFromGallery} style= {dataStyles.uploadBtn} >
                                         <Text style = {dataStyles.uploadText}>UPLOAD</Text>
                                     </Pressable>
 
@@ -82,16 +113,6 @@ export default function data() {
             </SafeAreaView>
         </ImageBackground>
 
-        {showCamera && (
-            <Modal
-                visible={showCamera}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={() => setShowCamera(false)}
-            >
-                <CameraFunction onClose={() => setShowCamera(false)} />
-            </Modal>
-        )}
         </>
     )
     }
