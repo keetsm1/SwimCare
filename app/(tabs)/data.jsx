@@ -2,9 +2,9 @@ import { Ionicons } from '@expo/vector-icons'
 import * as FileSystem from 'expo-file-system'
 import * as ImagePicker from 'expo-image-picker'
 import { useCallback, useEffect, useState } from 'react'
-import { Alert, FlatList, ImageBackground, Modal, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native'
+import { Alert, FlatList, Image, ImageBackground, Modal, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native'
 import wave from '../../assets/images/wave.png'
-import { addEntry, getEntries, initDB } from '../../components/db'
+import { addEntry, deletePhoto, getEntries, initDB } from '../../components/db'
 import { dataStyles } from '../../styles/dataStyles'
 
 export default function data() {
@@ -18,9 +18,12 @@ export default function data() {
     const [alkalinity, setAlkalinity] = useState('');
     
     const [entries, setEntries] = useState([]);
+
+    
     const loadEntries = useCallback(async () => {
         try{
             const rows = await getEntries();
+            console.log('rows from DB:', rows);
             setEntries(rows);
 
         }catch (error) {
@@ -32,7 +35,7 @@ export default function data() {
 
     useEffect(() => {
     initDB()
-        .then(() => {console.log('Database initialized')} loadEntries())
+        .then(() => {console.log('Database initialized'); loadEntries();})
         .catch((error) => console.error('Error initializing database:', error));
     }, []);
 
@@ -106,7 +109,7 @@ export default function data() {
                 ph: parseFloat(ph) || null,
                 cyanuric: parseFloat(cyanuric) || null,
                 alkalinity: parseFloat(alkalinity) || null,
-                uri: finalUri, // use the saved URI
+                uri: finalUri, // use th    e saved URI
                 createdAt: new Date().toISOString(), // optional, defaults to now()
             });
 
@@ -126,108 +129,157 @@ export default function data() {
         }
     };
 
-    return (
-        <>
-        <ImageBackground source = {wave} style= {dataStyles.container}>
-            <SafeAreaView>
-                <View style= {dataStyles.list}>
-                    <FlatList>
-                        data= {[getEntries()]}
-                        renderItem= {()=> (
-                            <View style= {dataStyles.listItem}>
-                                <Text style= {dataStyles.listText}>Salt: {salt}</Text>
-                                <Text style= {dataStyles.listText}>Chlorine: {chlorine}</Text>
-                                <Text style= {dataStyles.listText}>PH: {ph}</Text>
-                                <Text style= {dataStyles.listText}>Cyanuric: {cyanuric}</Text>
-                                <Text style= {dataStyles.listText}>Alkalinity: {alkalinity}</Text>
-                                {imageUri ? <Image source={{ uri: imageUri }} style={dataStyles.image} /> : null}
-                            </View>
-                        )}
-                    </FlatList>
 
+    const deleteIfFileExists = async (uri) => {
+        try{
+            if (!uri) return;
+            const info = await FileSystem.getInfoAsync(uri);
+            if (info.exists) await  FileSystem.deleteAsync(uri, {idempotent: true});
+        }catch (e){
+            console.warn("could not delete this file", e)
+        }
+    }
 
-                </View>
+    const handleDelete = async (id, uri) => {
+        try{
+            await deletePhoto(id);
+            await deleteIfFileExists(uri);
+            await loadEntries();
+        }catch(e){
+            console.error('Delete failed:', e);
+            Alert.alert('Error', 'Failed to delete entry.');
+        }
+    }
 
-                <View style= {dataStyles.plusLocation}>
-                    <Pressable onPress={ ()=> setIsModalVisible(true)}  style= {dataStyles.plusBtn} >
-                        <Ionicons 
-                            name= "add-circle-sharp"
-                            size = {60}
-                            color= "white"
-                        />
-                    </Pressable>
-                </View>  
-                
-                <Modal visible= {isModalVisible}  transparent= {true} animationType= "slide" onRequestClose={()=> {setIsModalVisible(false)}} >
-                    <View style = {dataStyles.modalStyle}>
-                        <View style= {dataStyles.popUpMenu}>
-                        <TextInput style= {dataStyles.salt}
-                            placeholder= "Enter current amount of salt in pool"
-                            value = {salt}
-                            onChangeText = {setSalt}
-                        />
+    const confirmDelete = (id, uri) => {
+        Alert.alert(
+        'Delete entry?',
+        'This will remove the entry and its photo from app storage.',
+        [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Delete', style: 'destructive', onPress: () => handleDelete(id, uri) },
+        ],
+        { cancelable: true }
+        );
+  };
+   return (
+  <ImageBackground source={wave} style={dataStyles.container} imageStyle={dataStyles.bgImage}>
+    <View style={dataStyles.bgOverlay} />
+    
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={[dataStyles.list, { flex: 1 }]}>
+        <FlatList
+          style={{ flex: 1 }}
+          data={entries}
+          keyExtractor={(item, i) => String(item?.id ?? item?.createdAt ?? i)}
+          contentContainerStyle={{ padding: 12, paddingBottom: 96 }}
+          ListEmptyComponent={
+            <View style ={dataStyles.emptyContent}>
+            <Text style={dataStyles.emptyText}>
+            </Text>
+            </View>
+          }
+          renderItem={({ item }) => (
+            <Pressable
+                onLongPress={() => confirmDelete(item.id, item.uri)}
+                delayLongPress={300}
+                android_ripple={{ color: '#e6e6e6' }}
+                style={({ pressed }) => [{ opacity: pressed ? 0.96 : 1 }]}
+            
+            >
+            <View style={dataStyles.listItem}>
+              <Text style={dataStyles.listText}>Salt: {item.salt ?? '—'}</Text>
+              <Text style={dataStyles.listText}>Chlorine: {item.chlorine ?? '—'}</Text>
+              <Text style={dataStyles.listText}>PH: {item.ph ?? '—'}</Text>
+              <Text style={dataStyles.listText}>Cyanuric: {item.cyanuric ?? '—'}</Text>
+              <Text style={dataStyles.listText}>Alkalinity: {item.alkalinity ?? '—'}</Text>
+              {item.uri ? <Image source={{ uri: item.uri }} style={dataStyles.image} /> : null}
+              <Text style={dataStyles.timestamp}>
+                {new Date(item.createdAt ?? item.created_at ?? Date.now()).toLocaleString()}
+              </Text>
+            </View>
+            </Pressable>
+          )}
+        />
+      </View>
 
-                        <TextInput style = {dataStyles.chlorine}
-                            placeholder= "Enter current chlorine levels"
-                            value = {chlorine}
-                            onChangeText = {setChlorine}
-                        />
+      <Pressable onPress={() => setIsModalVisible(true)} style={dataStyles.fab}>
+        <Ionicons name="add" size={28} color="#fff" />
+      </Pressable>
+    </SafeAreaView>
 
-                        <TextInput style = {dataStyles.PH}
-                            placeholder='Enter current PH Levels'
-                            value= {ph}
-                            onChangeText = {setPh}
-                        />
+    <Modal
+      visible={isModalVisible}
+      transparent
+      animationType="slide"
+      onRequestClose={() => setIsModalVisible(false)}
+    >
+      <View style={dataStyles.modalStyle}>
+        <View style={dataStyles.popUpMenu}>
+          <TextInput
+            style={dataStyles.salt}
+            placeholder="Enter current amount of salt in pool"
+            value={salt}
+            onChangeText={setSalt}
+            keyboardType="numeric"
+          />
+          <TextInput
+            style={dataStyles.chlorine}
+            placeholder="Enter current chlorine levels"
+            value={chlorine}
+            onChangeText={setChlorine}
+            keyboardType="numeric"
+          />
+          <TextInput
+            style={dataStyles.PH}
+            placeholder="Enter current PH Levels"
+            value={ph}
+            onChangeText={setPh}
+            keyboardType="numeric"
+          />
+          <TextInput
+            style={dataStyles.Cyanuric}
+            placeholder="Enter current level of cyanuric acid"
+            value={cyanuric}
+            onChangeText={setCyanuric}
+            keyboardType="numeric"
+          />
+          <TextInput
+            style={dataStyles.Alkalinity}
+            placeholder="Enter current level of Alkalinity"
+            value={alkalinity}
+            onChangeText={setAlkalinity}
+            keyboardType="numeric"
+          />
 
-                        <TextInput  style = {dataStyles.Cyanuric}
-                            placeholder='Enter current level of cyanuric acid'
-                            value = {cyanuric}
-                            onChangeText = {setCyanuric}
-                        />
+          <View style={dataStyles.cameraBtn}>
+            <Pressable onPress={takePhotoWithCamera}>
+              <Ionicons name="camera" size={50} color="#041c4a" />
+            </Pressable>
+            <Text style={dataStyles.optionText}>
+              Take a picture or select from your gallery
+            </Text>
+            <View style={dataStyles.uploadBtnWrapper}>
+              <Pressable onPress={pickImageFromGallery} style={dataStyles.uploadBtn}>
+                <Text style={dataStyles.uploadText}>UPLOAD</Text>
+              </Pressable>
+            </View>
+            <View style={dataStyles.saveBtnWrapper}>
+              <Pressable onPress={handleSave} style={dataStyles.saveBtn}>
+                <Text style={{ color: '#041c4a', fontWeight: '700' }}>SAVE</Text>
+              </Pressable>
+            </View>
+            {imageUri ? (
+              <Text style={{ textAlign: 'center', marginTop: 8 }}>
+                Image ready to save ✓
+              </Text>
+            ) : null}
+          </View>
+        </View>
+      </View>
+    </Modal>
+  </ImageBackground>
+);
 
-                        <TextInput style = {dataStyles.Alkalinity}
-                            placeholder='Enter current level of Alkalinity'
-                            value = {alkalinity}
-                            onChangeText = {setAlkalinity}
-                        />
-
-                            <View style = {dataStyles.cameraBtn}>
-                                <Pressable onPress={takePhotoWithCamera}>
-                                    <Ionicons 
-                                        name= 'camera'
-                                        size = {50}
-                                        color= '#041c4a'
-                                    />
-                                </Pressable>
-
-                                <Text style= {dataStyles.optionText}>
-                                    Take a picture or select from your gallery
-                                </Text>
-
-
-                                <View style = {dataStyles.uploadBtnWrapper}>
-                                    <Pressable onPress= {pickImageFromGallery} style= {dataStyles.uploadBtn} >
-                                        <Text style = {dataStyles.uploadText}>UPLOAD</Text>
-                                    </Pressable>
-
-                                </View>
-
-                                <View style = {dataStyles.saveBtnWrapper}>
-                                    <Pressable onPress= {handleSave} style  = {dataStyles.saveBtn}>
-                                        <Text>SAVE</Text>
-                                    </Pressable>
-                                </View>
-
-                                {imageUri ? <Text style={{ textAlign: 'center', marginTop: 8 }}>Image ready to save ✓</Text> : null}
-
-                            </View>
-                        </View>  
-                    </View>
-                </Modal> 
-            </SafeAreaView>
-        </ImageBackground>
-
-        </>
-    )
     }
 

@@ -13,7 +13,9 @@ export default function TabLayout() {
         options= {{
           title: "Home",
           headerShown: false,
-          tabBarStyle:{},
+          tabBarStyle:{
+            backgroundColor: "#ffffff",
+          },
           tabBarActiveTintColor: '007AFF',
           tabBarInactiveTintColor: '#444',
           tabBarIcon: ({color,size})=>(
@@ -31,7 +33,9 @@ export default function TabLayout() {
         options = {{
           title: "Data",
           headerShown: false, 
-          tabBarStyle: {},
+          tabBarStyle: {
+            backgroundColor: "#ffffff",
+          },
           tabBarActiveTintColor: '007AFF',
           tabBarInactiveTintColor: '#444',
           tabBarIcon: ({color,size}) =>(
