@@ -4,11 +4,10 @@ import { openDatabaseAsync } from 'expo-sqlite';
 // cache a single async DB handle
 let dbPromise;
 function getDB() {
-  if (!dbPromise) dbPromise = openDatabaseAsync('swimcare.db'); // fix typo from "swiimcare"
+  if (!dbPromise) dbPromise = openDatabaseAsync('swimcare.db');
   return dbPromise;
 }
 
-// call once on app start (e.g., in a root useEffect)
 export async function initDB() {
   const db = await getDB();
   await db.execAsync(`
@@ -19,34 +18,39 @@ export async function initDB() {
       ph REAL,
       cyanuric REAL,
       alkalinity REAL,
-      uri TEXT NOT NULL,
-      createdAt TEXT DEFAULT (datetime('now')),
-      note TEXT
+      uri TEXT,
+      createdAt TEXT DEFAULT (datetime('now')) -- 🔵 removed note column
     );
   `);
 }
 
-// save a photo reference (string URI) + metadata
-export async function addPhoto({ uri, createdAt, note = null }) {
+// 🔵 addEntry simplified (no note anymore)
+export async function addEntry({
+  salt = null,
+  chlorine = null,
+  ph = null,
+  cyanuric = null,
+  alkalinity = null,
+  uri,                // required
+  createdAt,          // optional ISO; defaults to now()
+}) {
   const db = await getDB();
   const ts = createdAt ?? new Date().toISOString();
   await db.runAsync(
-    `INSERT INTO pool_data (uri, createdAt, note) VALUES (?, ?, ?)`,
-    [uri, ts, note]
+    `INSERT INTO pool_data
+      (salt, chlorine, ph, cyanuric, alkalinity, uri, createdAt)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [salt, chlorine, ph, cyanuric, alkalinity, uri, ts] // 🔵 no note arg
   );
 }
 
-// fetch photos (newest first)
-export async function getPhotos() {
+export async function getEntries() {
   const db = await getDB();
-  // datetime(createdAt) handles both DEFAULT and ISO strings
-  const rows = await db.getAllAsync(
+  return db.getAllAsync(
     `SELECT * FROM pool_data ORDER BY datetime(createdAt) DESC`
   );
-  return rows; // -> [{ id, uri, createdAt, ... }]
 }
 
-// delete one (don’t forget to also delete the file via FileSystem.deleteAsync(uri))
 export async function deletePhoto(id) {
   const db = await getDB();
   await db.runAsync(`DELETE FROM pool_data WHERE id = ?`, [id]);

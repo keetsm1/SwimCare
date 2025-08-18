@@ -126,6 +126,9 @@ export const dataStyles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
     },
+    list:{
+        flex: 1,
+    },
     
 
     
