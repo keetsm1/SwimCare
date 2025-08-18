@@ -8,6 +8,9 @@ import { addEntry, deletePhoto, getEntries, initDB } from '../../components/db'
 import { dataStyles } from '../../styles/dataStyles'
 
 export default function data() {
+
+    const [previewUri, setPreviewUri] = useState(null);
+
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [imageUri, setImageUri] = useState(null);
 
@@ -193,7 +196,11 @@ export default function data() {
               <Text style={dataStyles.listText}>PH: {item.ph ?? '—'}</Text>
               <Text style={dataStyles.listText}>Cyanuric: {item.cyanuric ?? '—'}</Text>
               <Text style={dataStyles.listText}>Alkalinity: {item.alkalinity ?? '—'}</Text>
-              {item.uri ? <Image source={{ uri: item.uri }} style={dataStyles.image} /> : null}
+               {item.uri ? (
+                 <Pressable onPress={() => setPreviewUri(item.uri)}>
+                    <Image source={{ uri: item.uri }} style={dataStyles.image} />
+                  </Pressable>
+                  ) : null}
               <Text style={dataStyles.timestamp}>
                 {new Date(item.createdAt ?? item.created_at ?? Date.now()).toLocaleString()}
               </Text>
@@ -278,6 +285,31 @@ export default function data() {
         </View>
       </View>
     </Modal>
+
+    <Modal
+        visible={!!previewUri}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setPreviewUri(null)}
+      >
+        <Pressable
+          onPress={() => setPreviewUri(null)}
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.9)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {previewUri ? (
+            <Image
+              source={{ uri: previewUri }}
+              resizeMode="contain"
+              style={{ width: '92%', height: '80%', borderRadius: 12 }}
+            />
+          ) : null}
+        </Pressable>
+      </Modal>
   </ImageBackground>
 );
 
