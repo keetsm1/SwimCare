@@ -7,6 +7,16 @@ export const authStyles = StyleSheet.create({
     safeArea: {
         flex: 1,
     },
+    logoWrap:{
+        position: 'absolute',
+        paddingTop: 20,
+        alignSelf: 'center',
+    },
+    logo:{
+        width: 200,
+        height: 200,
+    },
+
 
 
 
