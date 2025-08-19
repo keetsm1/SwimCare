@@ -46,11 +46,29 @@ export default function TabLayout() {
             />
           )
         }}
-      
-      
-      
       />
 
+      <Tabs.Screen
+        name= "analytics"
+        options = {{
+          title: "Analytics",
+          headerShown: false, 
+          tabBarStyle: {
+            backgroundColor: "#ffffff",
+          },
+          tabBarActiveTintColor: '007AFF',
+          tabBarInactiveTintColor: '#444',
+          tabBarIcon: ({color,size}) =>(
+            <Ionicons
+            name= "information-circle-outline"
+            size= {size}
+            color= {color}
+            />
+          )
+        }}
+      />
+
+      
     </Tabs>
   );
 }
