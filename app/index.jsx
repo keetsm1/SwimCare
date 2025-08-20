@@ -3,7 +3,7 @@ import { Image, ImageBackground, Pressable, SafeAreaView, Text, TextInput, View 
 import logo from '../assets/images/logo.png'
 import wave from '../assets/images/wave.png'
 import { authStyles } from '../styles/authStyles'
-const authentication = () => {
+const index = () => {
   const router = useRouter();
 
   return (
@@ -42,4 +42,4 @@ const authentication = () => {
     </ImageBackground>
 )}
 
-export default authentication
+export default index

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "152140481574",
+    "project_id": "swimcare-1f4bc",
+    "storage_bucket": "swimcare-1f4bc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152140481574:android:00313fce8624e40b0b12e7",
+        "android_client_info": {
+          "package_name": "com.keet.swimcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsKgsNQ2PXPABxeoCqiTKYxbB-EbowEGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

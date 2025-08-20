@@ -38,7 +38,7 @@ const signup = () => {
 
             </View>
 
-            <Pressable onPress= {()=> router.navigate('/authentication') }>
+            <Pressable onPress= {()=> router.navigate('/') }>
                 <Text style={signupStyles.backToLogin}>Back to login page!</Text>
             </Pressable>
         </View>
