@@ -51,7 +51,18 @@ export const authStyles = StyleSheet.create({
         color: 'white',
         textDecorationLine: 'underline',
         fontSize: 15,
+        textDecorationStyle: 'double'
     },
+    forgotPWContainer:{
+        alignSelf: 'center',
+        marginTop: 10,
+    },
+    forgotPW:{
+        color: 'white',
+        textDecorationLine: 'underline',
+        fontSize: 15,
+        textDecorationStyle: 'double'
+    }
 
 
 

@@ -68,6 +68,26 @@ export default function TabLayout() {
         }}
       />
 
+      <Tabs.Screen
+        name= "account"
+        options = {{
+          title: "Account",
+          headerShown: false, 
+          tabBarStyle: {
+            backgroundColor: "#ffffff",
+          },
+          tabBarActiveTintColor: '007AFF',
+          tabBarInactiveTintColor: '#444',
+          tabBarIcon: ({color,size}) =>(
+            <Ionicons
+            name= "person-circle-outline"
+            size= {size}
+            color= {color}
+            />
+          )
+        }}
+      />
+
       
     </Tabs>
   );

@@ -17,7 +17,7 @@ const index = () => {
 
 
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   function handleAuthStateChanged(user){
     setUser(user);
@@ -26,9 +26,9 @@ const index = () => {
 
   useEffect(() => {
     const auth = getAuth();
-    const subscriber = onAuthStateChanged(getAuth(), handleAuthStateChanged);
+    const subscriber = onAuthStateChanged(auth, handleAuthStateChanged);
     return subscriber; // unsubscribe on unmount
-  }, []);
+  }, [initializing]);
 
   if (initializing) return null;
 
@@ -36,7 +36,7 @@ const index = () => {
 
   const handleLogin = async()=>{
     try{
-      setError(null);
+      setError('');
       setLoading(true);
       await signInWithEmailAndPassword(getAuth(), email.trim(), password);
 
@@ -90,6 +90,16 @@ const index = () => {
             <Pressable onPress= {()=> router.navigate('/signup')}>
               <Text style= {authStyles.signUp}>Sign Up!</Text>
             </Pressable>
+
+          </View>
+
+
+          <View style = {authStyles.forgotPWContainer}>
+
+            <Pressable onPress= {()=> router.navigate('/reset')}>
+              <Text style = {authStyles.forgotPW}> Reset Password</Text>
+            </Pressable>
+
 
           </View>
 
