@@ -1,11 +1,10 @@
 import { useMemo, useState } from 'react';
-import { FlatList, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
+import { FlatList, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, View, useColorScheme } from 'react-native';
 import wave from '../../assets/images/wave.png';
 import { homeStyles } from '../../styles/homeStyles';
 
 function UnitSelect({ value, onChange, options = [], style }) {
   const [open, setOpen] = useState(false);
-
   return (
     <>
       <Pressable
@@ -87,7 +86,7 @@ export default function Home() {
   // Inputs
   const [poolSize, setPoolSize] = useState('');
   const [poolUnit, setPoolUnit] = useState('L'); // 'L' | 'gal'
-
+   const isDark = useColorScheme() === 'dark';
   const [saltLevel, setSaltLevel] = useState('');
   const [chlorineLevel, setChlorineLevel] = useState('');
   const [phLevels, setPHLevels] = useState('');
@@ -137,6 +136,7 @@ export default function Home() {
             value={poolSize}
             onChangeText={setPoolSize}
             placeholder="Pool Size"
+            placeholderTextColor={isDark ? "#9CA3AF" : "#6B7280"} 
             keyboardType="numeric"
           />
           <UnitSelect
@@ -154,6 +154,7 @@ export default function Home() {
           value={saltLevel}
           onChangeText={setSaltLevel}
           placeholder="Current Salt (ppm)"
+          placeholderTextColor={isDark ? "#9CA3AF" : "#6B7280"} 
           keyboardType="numeric"
         />
 
@@ -162,6 +163,7 @@ export default function Home() {
           value={chlorineLevel}
           onChangeText={setChlorineLevel}
           placeholder="Free Chlorine (ppm)"
+          placeholderTextColor={isDark ? "#9CA3AF" : "#6B7280"} 
           keyboardType="numeric"
         />
 
@@ -170,6 +172,7 @@ export default function Home() {
           value={phLevels}
           onChangeText={setPHLevels}
           placeholder="pH"
+          placeholderTextColor={isDark ? "#9CA3AF" : "#6B7280"} 
           keyboardType="numeric"
         />
 
@@ -178,6 +181,7 @@ export default function Home() {
           value={cyaLevel}
           onChangeText={setCyaLevel}
           placeholder="Cyanuric Acid (ppm)"
+          placeholderTextColor={isDark ? "#9CA3AF" : "#6B7280"} 
           keyboardType="numeric"
         />
 
@@ -186,6 +190,7 @@ export default function Home() {
           value={alkinityLevels}
           onChangeText={setAlknityLevels}
           placeholder="Total Alkalinity (ppm)"
+          placeholderTextColor={isDark ? "#9CA3AF" : "#6B7280"} 
           keyboardType="numeric"
         />
 

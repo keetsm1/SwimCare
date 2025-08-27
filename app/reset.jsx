@@ -1,13 +1,13 @@
 import { getAuth, sendPasswordResetEmail } from '@react-native-firebase/auth'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { ImageBackground, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native'
+import { ImageBackground, Pressable, SafeAreaView, Text, TextInput, View, useColorScheme } from 'react-native'
 import wave from '../assets/images/wave.png'
 import { resetStyles } from '../styles/resetStyles'
 
 const reset = () => {
     const router = useRouter()
-
+    const isDark = useColorScheme() === 'dark'
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -35,8 +35,21 @@ const reset = () => {
 
             <Text style = {resetStyles.resetText}>Reset your password</Text>
 
-            <TextInput style = {resetStyles.emailInput}
+            <TextInput
             placeholder= "Enter email for reset"
+            placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'} // darker gray for dark mode
+            style={[
+              resetStyles.emailInput,
+              {
+                height: 52,
+                borderWidth: 1,
+                borderRadius: 14,
+                paddingHorizontal: 14,
+                backgroundColor: '#ffffff', // always white
+                color: '#0f172a',           // typed text color (dark navy)
+                borderColor: '#ffffff',     // light gray border
+              }
+            ]}
             autoCapitalize='none'
             keyboardType='email-address'
             value= {email}

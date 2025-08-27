@@ -1,13 +1,14 @@
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from '@react-native-firebase/auth'
 import { Redirect, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { Image, ImageBackground, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native'
+import { Image, ImageBackground, Pressable, SafeAreaView, Text, TextInput, View, useColorScheme } from 'react-native'
 import logo from '../assets/images/logo.png'
 import wave from '../assets/images/wave.png'
 import { authStyles } from '../styles/authStyles'
  
 const index = () => {
 
+  const isDark = useColorScheme() === 'dark'
   const router = useRouter();
 
   const [email, setEmail] = useState('');
@@ -62,6 +63,16 @@ const index = () => {
           <View style= {authStyles.textInputEmail}>
                <TextInput 
                placeholder= "Enter your email"
+                placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'} // darker gray for dark mode
+                style={{
+                  height: 52,
+                  borderWidth: 1,
+                  borderRadius: 14,
+                  paddingHorizontal: 14,
+                  backgroundColor: '#ffffff', // always white
+                  color: '#0f172a',           // typed text color (dark navy)
+                  borderColor: '#e5e7eb',     // light gray border
+                }}
                autoCapitalize='none'
                keyboardType='email-address'
                value = {email}
@@ -72,6 +83,16 @@ const index = () => {
           <View style = {authStyles.textInputPassword}>
                 <TextInput 
                 placeholder='Enter your password' 
+                 placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'} // darker gray for dark mode
+                style={{
+                  height: 52,
+                  borderWidth: 1,
+                  borderRadius: 14,
+                  paddingHorizontal: 14,
+                  backgroundColor: '#ffffff', // always white
+                  color: '#0f172a',           // typed text color (dark navy)
+                  borderColor: '#ffffff',     // light gray border
+                }}
                 secureTextEntry= {true}
                 value = {password}
                 onChangeText= {setPassword}
