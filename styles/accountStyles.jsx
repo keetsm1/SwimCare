@@ -48,7 +48,7 @@ export const accountStyles = StyleSheet.create({
     marginTop: 8,
   },
   logoutBtn: {
-    backgroundColor: '#ef4444',
+    backgroundColor: 'rgba(10,17,36,0.75)',
     borderRadius: 14,
     paddingVertical: 14,
     paddingHorizontal: 16,

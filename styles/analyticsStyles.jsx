@@ -6,7 +6,7 @@ export const analyticsStyles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    backgroundColor: 'rgba(3,8,23,0.55)', // slight overlay for contrast on the wave
+    backgroundColor: 'rgba(3,8,23,0.55)',
   },
   scrollBody: {
     paddingHorizontal: 16,
@@ -37,6 +37,11 @@ export const analyticsStyles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
   },
+
+  chartWrapper: {
+    borderRadius: 12,
+    overflow: 'hidden', // clip chart to rounded corners
+  },
   chart: {
     borderRadius: 12,
   },
@@ -53,7 +58,7 @@ export const analyticsStyles = StyleSheet.create({
     color: '#9ca3af',
   },
 
-  // Optional KPI chips (if you add them later)
+  // Optional KPI chips
   kpiRow: {
     flexDirection: 'row',
     gap: 8,

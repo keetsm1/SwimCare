@@ -36,6 +36,7 @@ export default function Account() {
                 <Text style={accountStyles.logoutBtnText}>Logout</Text>
               </Pressable>
             </View>
+            
 
             <Text style={accountStyles.footerText}>Thanks for using SwimCare 💧</Text>
           </View>
