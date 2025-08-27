@@ -1,11 +1,11 @@
 import { createUserWithEmailAndPassword, getAuth, signOut } from '@react-native-firebase/auth'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { ImageBackground, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native'
+import { ImageBackground, Pressable, SafeAreaView, Text, TextInput, View, useColorScheme } from 'react-native'
 import wave from '../assets/images/wave.png'
 import { signupStyles } from '../styles/signupStyles'
 const signup = () => {
-
+    const isDark = useColorScheme() === 'dark'
     const [email, setEmail] = useState('');
     const [email2, setEmail2] = useState('');
     const [password, setPassword] = useState('');
@@ -67,6 +67,7 @@ const signup = () => {
             <View style = {signupStyles.inputContainer}>
                 <TextInput 
                 placeholder= "Enter your email"
+                placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'} // darker gray for dark mode
                 autoCapitalize='none'
                 keyboardType='email-address'
                 value = {email}
@@ -77,6 +78,7 @@ const signup = () => {
             <View style = {signupStyles.inputContainer}>
                 <TextInput 
                 placeholder= "Re-enter your email"
+                placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'} 
                 autoCapitalize='none'
                 keyboardType='email-address'
                 value = {email2}
@@ -87,6 +89,7 @@ const signup = () => {
             <View style = {signupStyles.inputContainer}>
                 <TextInput 
                 placeholder= "Choose a password" 
+                placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'} 
                 secureTextEntry= {true}
                 value={password}
                 onChangeText={setPassword}
@@ -97,6 +100,7 @@ const signup = () => {
             <View style = {signupStyles.inputContainer}>
                 <TextInput 
                 placeholder= "Re-enter the password" 
+                placeholderTextColor={isDark ? '#9CA3AF' : '#6B7280'} 
                 secureTextEntry= {true}
                 value={password2}
                 onChangeText={setPassword2}
