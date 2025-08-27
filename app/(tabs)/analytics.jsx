@@ -1,29 +1,28 @@
 import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Dimensions, ImageBackground, SafeAreaView, ScrollView, Text, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
-import { ImageBackground } from 'react-native-web';
 import wave from '../../assets/images/wave.png';
 import { getEntries } from '../../components/db';
 import { analyticsStyles } from '../../styles/analyticsStyles';
 
-  const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get('window').width;
 
-  const chartConfig = {
-    backgroundGradientFrom: '#0f172a',
-    backgroundGradientTo: '#1e293b',
-    decimalPlaces: 2,
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  };
-  
-const analytics = () => {
+const chartConfig = {
+  backgroundGradientFrom: '#0f172a',
+  backgroundGradientTo: '#1e293b',
+  decimalPlaces: 2,
+  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+  propsForDots: { r: '3' },
+};
 
-  const [labels, setLabels] = useState([])
-  const [phValues, setPhValues ] = useState([])
+export default function Analytics() {
+  const [labels, setLabels] = useState([]);
+  const [phValues, setPhValues] = useState([]);
 
-    useEffect(() => {
+  useEffect(() => {
     (async () => {
-      const rows = await getEntries(); 
+      const rows = await getEntries();
       if (!rows.length) return;
 
       const sorted = [...rows].sort(
@@ -31,24 +30,26 @@ const analytics = () => {
       );
 
       setLabels(sorted.map(r => new Date(r.createdAt).toLocaleDateString()));
-      setPhValues(sorted.map(r => r.ph ?? 0));
+
+      // 🔵 force convert to numbers
+      setPhValues(sorted.map(r => r.ph != null ? Number(r.ph) : 0));
     })();
   }, []);
 
-
+  const hasData = phValues.length > 0 && phValues.some(v => Number.isFinite(v) && v !== 0);
 
   return (
-      <ImageBackground source={wave} style={analyticsStyles.imageContainer} resizeMode="cover">
+    <ImageBackground source={wave} style={analyticsStyles.imageContainer} resizeMode="cover">
       <SafeAreaView style={analyticsStyles.safeArea}>
         <ScrollView contentContainerStyle={analyticsStyles.scrollBody}>
-          <Text style={analyticsStyles.title}>Analytics</Text>
+          <Text style={analyticsStyles.title}></Text>
 
           <View style={analyticsStyles.card}>
             <Text style={analyticsStyles.cardTitle}>pH over time</Text>
             {hasData ? (
               <LineChart
                 data={{ labels, datasets: [{ data: phValues }] }}
-                width={screenWidth - 32}          // padding-aware
+                width={screenWidth - 32}
                 height={240}
                 chartConfig={chartConfig}
                 bezier
@@ -60,11 +61,8 @@ const analytics = () => {
               </View>
             )}
           </View>
-
         </ScrollView>
       </SafeAreaView>
     </ImageBackground>
   );
 }
-
-export default analytics
