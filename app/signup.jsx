@@ -26,6 +26,12 @@ const signup = () => {
             setError('Passwords do not match');
             return;
         }
+        const passwordRegex = /^(?=.*[A-Z]).{10,}$/; 
+
+        if (!passwordRegex.test(password)) {
+        setError('Password must be at least 10 characters and contain at least one uppercase letter.');
+        return;
+    }
 
         try{
             setLoading(true);
@@ -40,7 +46,7 @@ const signup = () => {
                 setError('That email address is invalid!');
             }
             else if(error.code === 'auth/weak-password'){
-                setError('Password should be at least 6 characters!');  
+                setError('Password should be at least 10 characters!');  
             }
             else{
                 setError('Something went wrong. Please try again later.');
