@@ -1,50 +1,37 @@
-# Welcome to your Expo app 👋
+**🏊 SwimCare**
+A smart pool maintenance companion app built with React Native & Expo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**📖 Overview**
+SwimCare is a mobile app designed to simplify pool maintenance tracking.
+It helps pool owners log water quality data, analyze trends, and calculate exact chemical dosages needed to keep their pool balanced.
 
-## Get started
+**✨ Features**
+- 📊 Analytics Dashboard: Interactive charts to track pH, chlorine, salt, and alkalinity trends over time.
 
-1. Install dependencies
+- 📝 Data Logging: Record current water chemistry levels with a clean and simple input UI.
 
-   ```bash
-   npm install
-   ```
+- 🔢 Dosage Calculator: Calculate the exact amount of chemicals needed to adjust pool balance (kg/L).
 
-2. Start the app
+- 📷 Photo Uploads: Add reference images from your camera or gallery to keep visual records.
 
-   ```bash
-   npx expo start
-   ```
+- 🔐 Authentication: Firebase-powered sign up, login, and password reset.
 
-In the output, you'll find options to open the app in a
+**🛠️ Tech Stack**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Frontend: React Native + Expo Router
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Authentication: Firebase Authentication
 
-## Get a fresh project
+- Storage: SQLite (local logging)
 
-When you're ready, run:
+- Charts: react-native-chart-kit
 
-```bash
-npm run reset-project
-```
+- Deployment: Google Play Store (in progress 🚀)
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+**📸 Screenshots**
+<img width="1080" height="2340" alt="1" src="https://github.com/user-attachments/assets/4ea9b859-06ab-4b4c-8ba4-bb8cf75371e0" />
+<img width="1080" height="2340" alt="2" src="https://github.com/user-attachments/assets/63674b7c-c844-40ab-8822-762b9474dbac" />
+<img width="1080" height="2340" alt="3" src="https://github.com/user-attachments/assets/4f35eca4-494a-4ee8-8a29-b29b07c8fb38" />
+<img width="1080" height="2340" alt="4" src="https://github.com/user-attachments/assets/872e569e-f767-409b-ad21-af62d6f08f4e" />
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
